@@ -1,0 +1,7 @@
+---
+custom_structured_configuration_router_bgp:
+  neighbors:
+  - ip_address: 172.16.1.8
+    peer_group: EVPN-OVERLAY-PEERS
+    description: s1-brdr2
+    remote_as: '65103'

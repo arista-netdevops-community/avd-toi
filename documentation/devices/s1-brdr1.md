@@ -474,6 +474,7 @@ ip routing
 | 169.254.0.9 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
 | 172.16.1.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 172.16.1.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
+| 172.16.2.7 | 65203 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -524,6 +525,9 @@ router bgp 65103
    neighbor 172.16.1.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.1.2 remote-as 65100
    neighbor 172.16.1.2 description s1-spine2
+   neighbor 172.16.2.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.2.7 remote-as 65203
+   neighbor 172.16.2.7 description s2-brdr1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

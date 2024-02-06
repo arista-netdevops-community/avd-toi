@@ -472,6 +472,7 @@ ip routing
 | 10.0.0.22 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.255.0.2 | 65103 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 169.254.0.8 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
+| 172.16.1.8 | 65103 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 172.16.2.1 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 172.16.2.2 | 65200 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 
@@ -518,6 +519,9 @@ router bgp 65203
    neighbor 10.255.0.2 description s1-brdr2
    neighbor 169.254.0.8 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 169.254.0.8 description s2-brdr1
+   neighbor 172.16.1.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.1.8 remote-as 65103
+   neighbor 172.16.1.8 description s1-brdr2
    neighbor 172.16.2.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.2.1 remote-as 65200
    neighbor 172.16.2.1 description s2-spine1

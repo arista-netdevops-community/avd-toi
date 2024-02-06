@@ -69,6 +69,10 @@ router_bgp:
     peer: s2-brdr1
     description: s2-brdr1
     peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.2.7
+    peer_group: EVPN-OVERLAY-PEERS
+    description: s2-brdr1
+    remote_as: '65203'
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
