@@ -1,0 +1,55 @@
+---
+port_profiles:
+  - profile: Host_POD1
+    # VLANs that will be configured on these ports.
+    vlans: 112,134
+    # Native VLAN to be used on these ports.
+    native_vlan: 1
+    # L2 mode of the port.
+    mode: trunk
+    # Spanning tree portfast configuration on this port.
+    spanning_tree_portfast: edge
+    # Definition of the pair of ports as port channel.
+    port_channel:
+      # Port channel mode for LACP.
+      mode: active
+
+  - profile: Host_POD2
+    vlans: 112,234
+    native_vlan: 1
+    mode: trunk
+    spanning_tree_portfast: edge
+    port_channel:
+      mode: active
+
+# Definition of connected endpoints in the fabric.
+servers:
+  # Name of the defined server.
+  - name: s1-host1
+    # Definition of adapters on the server.
+    adapters:
+      # Name of the server interfaces that will be used in the description of each interface
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        profile: Host_POD1
+        # Device ports where the server ports are connected.
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        # Device names where the server ports are connected.
+        switches: [ s1-leaf1, s1-leaf2 ]
+  - name: s1-host2
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        profile: Host_POD1
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s1-leaf3, s1-leaf4 ]
+  - name: s2-host1
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        profile: Host_POD2
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s2-leaf1, s2-leaf2 ]
+  - name: s2-host2
+    adapters:
+      - endpoint_ports: [ Ethernet1, Ethernet2 ]
+        profile: Host_POD2
+        switch_ports: [ Ethernet4, Ethernet4 ]
+        switches: [ s2-leaf3, s2-leaf4 ]

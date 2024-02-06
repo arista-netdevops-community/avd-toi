@@ -1,0 +1,37 @@
+---
+tenants:
+  # Definition of tenants. Additional level of abstraction to VRFs
+  - name: Tenant-A
+    # Number used to generate the VNI of each VLAN by adding the VLAN number in this tenant.
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: Blue
+        vrf_id: 10
+        # VRF VNI definition.
+        vrf_vni: 30010
+        svis:
+          # SVI definitions.
+          - id: 134
+            tags: [POD1]
+            # SVI Description
+            name: L3_Intra_POD1
+            # IP anycast gateway to be used in the SVI in every leaf.
+            enabled: true
+            ip_address_virtual: 10.111.134.1/24
+          - id: 234
+            tags: [POD2]
+            name: L3_Intra_POD2
+            enabled: true
+            ip_address_virtual: 10.222.234.1/24
+    l2vlans:
+      # These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric
+      - id: 112
+        tags: [POD1, POD2]
+        name: L2_Stretched_POD1-POD2
+      # - id: 134
+      #   tags: [POD1]
+      #   name: L2_Intra_POD1
+      # - id: 234
+      #   tags: [POD2]
+      #   name: L2_Intra_POD2
