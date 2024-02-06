@@ -1,0 +1,91 @@
+---
+all:
+  children:
+    CLOUDVISION:
+      hosts:
+        cvp:
+          ansible_host: 192.168.0.5
+          ansible_user: arista
+          ansible_password: # FILL ME
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+    FABRIC:
+      vars:
+        ansible_connection: ansible.netcommon.httpapi
+        ansible_network_os: arista.eos.eos
+        ansible_user: arista
+        ansible_password: # FILL ME
+        ansible_httpapi_use_ssl: true
+        ansible_httpapi_validate_certs: false
+      children:
+        POD1:
+          children:
+            POD1_SPINES:
+              vars:
+                type: spine
+              hosts:
+                s1-spine1:
+                  ansible_host: 192.168.0.10
+                s1-spine2:
+                  ansible_host: 192.168.0.11
+            POD1_L3_LEAVES:
+              vars:
+                type: l3leaf
+              hosts:
+                s1-leaf1:
+                  ansible_host: 192.168.0.12
+                s1-leaf2:
+                  ansible_host: 192.168.0.13
+                s1-leaf3:
+                  ansible_host: 192.168.0.14
+                s1-leaf4:
+                  ansible_host: 192.168.0.15
+            POD1_L3_BORDER_LEAVES:
+              vars:
+                type: l3leaf
+              hosts:
+                s1-brdr1:
+                  ansible_host: 192.168.0.100
+                s1-brdr2:
+                  ansible_host: 192.168.0.101
+        POD2:
+          children:
+            POD2_SPINES:
+              vars:
+                type: spine
+              hosts:
+                s2-spine1:
+                  ansible_host: 192.168.0.20
+                s2-spine2:
+                  ansible_host: 192.168.0.21
+            POD2_L3_LEAVES:
+              vars:
+                type: l3leaf
+              hosts:
+                s2-leaf1:
+                  ansible_host: 192.168.0.22
+                s2-leaf2:
+                  ansible_host: 192.168.0.23
+                s2-leaf3:
+                  ansible_host: 192.168.0.24
+                s2-leaf4:
+                  ansible_host: 192.168.0.25
+            POD2_L3_BORDER_LEAVES:
+              vars:
+                type: l3leaf
+              hosts:
+                s2-brdr1:
+                  ansible_host: 192.168.0.200
+                s2-brdr2:
+                  ansible_host: 192.168.0.201
+
+    NETWORK_SERVICES:
+      children:
+        POD1_L3_LEAVES:
+        POD2_L3_LEAVES:
+    CONNECTED_ENDPOINTS:
+      children:
+        POD1_L3_LEAVES:
+        POD2_L3_LEAVES:

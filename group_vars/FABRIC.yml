@@ -1,0 +1,55 @@
+---
+# Common AVD group variables
+fabric_name: FABRIC
+
+# When running vEOS-lab or cEOS, MTU of 1500 in underlay must be used
+p2p_uplinks_mtu: 1500
+
+# Use default VRF for management to match Arista Test Drive configlets
+mgmt_interface_vrf: default
+
+platform_settings: 
+  - platforms:
+      - cEOSlab
+    reload_delay:
+      # In seconds.
+      mlag: 300
+      # In seconds.
+      non_mlag: 330
+    # Default interface MTU configured on EOS under "interface defaults".
+    # The overlay interfaces should use 1450 to make room for VXLAN header
+    default_interface_mtu: 1450
+    feature_support:
+      # Disable hardware-specific BGP settings
+      bgp_update_wait_install: false
+      bgp_update_wait_for_convergence: false
+    management_interface: Management0
+
+# Define underlay and overlay routing protocol to be used
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+# Local users
+local_users:
+  # Define a new user, which is called "ansible"
+  - name: ansible
+    privilege: 15
+    role: network-admin
+    # Password set to "ansible". Same string as the device generates when configuring a username.
+    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  - name: admin
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+# Define default interfaces
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ cEOSlab ]
+    downlink_interfaces: [ Ethernet2-5, Ethernet7-8 ]
+  - types: [ l3leaf ]
+    platforms: [ cEOSlab ]
+    uplink_interfaces: [ Ethernet2-3 ]
+    mlag_interfaces: [ Ethernet1, Ethernet6 ]
+    downlink_interfaces: [ Ethernet4 ]
+

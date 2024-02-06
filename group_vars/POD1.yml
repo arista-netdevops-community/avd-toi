@@ -1,0 +1,89 @@
+---
+# Spine switch group
+spine:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: cEOSlab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 172.16.1.0/24
+    # ASN to be used by BGP
+    bgp_as: 65100
+
+  # Definition of nodes contained in this group.
+  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+    - name: s1-spine1
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 192.168.0.10/24
+
+    - name: s1-spine2
+      id: 2
+      mgmt_ip: 192.168.0.11/24
+
+# L3 Leaf switch group
+l3leaf:
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: cEOSlab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 172.16.1.0/24
+    # Offset all assigned loopback IP addresses.
+    # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+    # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+    loopback_ipv4_offset: 2
+    # Definition of pool of IPs to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
+    vtep_loopback_ipv4_pool: 172.16.100.0/24
+    # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
+    uplink_switches: ['s1-spine1', 's1-spine2']
+    # Definition of pool of IPs to be used in P2P links
+    uplink_ipv4_pool: 10.0.0.0/24
+    # Definition of pool of IPs to be used for MLAG peer-link connectivity
+    mlag_peer_ipv4_pool: 169.254.0.0/24
+    mlag_port_channel_id: 2000
+    # iBGP Peering between MLAG peers
+    mlag_peer_l3_vlan: 4094
+    # Virtual router mac for VNIs assigned to Leaf switches in format xx:xx:xx:xx:xx:xx
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_mode: mstp
+    filter:
+      tags: [POD1]
+
+  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
+  node_groups:
+    # Definition of a node group that will include two devices in MLAG.
+    # Definitions under the group will be inherited by both nodes in the group
+    - group: POD1_L3_RACK1
+      # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+      bgp_as: 65101
+      nodes:
+        # Definition of hostnames under the node_group
+        - name: s1-leaf1
+          id: 1
+          mgmt_ip: 192.168.0.12/24
+        - name: s1-leaf2
+          id: 2
+          mgmt_ip: 192.168.0.13/24
+
+    - group: POD1_L3_RACK2
+      bgp_as: 65102
+      nodes:
+        - name: s1-leaf3
+          id: 3
+          mgmt_ip: 192.168.0.14/24
+        - name: s1-leaf4
+          id: 4
+          mgmt_ip: 192.168.0.15/24
+
+    - group: POD1_L3_RACK3
+      bgp_as: 65103
+      nodes:
+        - name: s1-brdr1
+          id: 5
+          mgmt_ip: 192.168.0.100/24
+        - name: s1-brdr2
+          id: 6
+          mgmt_ip: 192.168.0.101/24
