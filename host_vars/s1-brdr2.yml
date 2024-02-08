@@ -1,5 +1,8 @@
 ---
 custom_structured_configuration_router_bgp:
+  peer_groups:
+  - name: EVPN-OVERLAY-PEERS
+    next_hop_unchanged: true
   neighbors:
   - ip_address: 172.16.2.8
     peer_group: EVPN-OVERLAY-PEERS
