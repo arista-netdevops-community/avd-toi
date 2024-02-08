@@ -31,6 +31,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
+    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER

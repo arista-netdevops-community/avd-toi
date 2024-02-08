@@ -440,6 +440,7 @@ ip routing
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Next-hop unchanged | True |
 | Source | Loopback0 |
 | BFD | True |
 | Ebgp multihop | 3 |
@@ -493,6 +494,7 @@ router bgp 65203
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
